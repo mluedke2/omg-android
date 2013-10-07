@@ -32,6 +32,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     ArrayAdapter<String> mArrayAdapter;
     ArrayList<String> mCountryList = new ArrayList<String>();
     ShareActionProvider mShareActionProvider;
+    JSONArray mCountryArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         mainTextView = (TextView) findViewById(R.id.main_textview);
         //mainTextView.setText("Set in Java");
 
-        // Access the Button defined in layout XML and listen for it here
+        // Access the Button defined in layout XML and listen for it with this activity
         mainButton = (Button) findViewById(R.id.main_button);
         mainButton.setOnClickListener(this);
 
@@ -75,9 +76,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                         Toast.LENGTH_LONG)
                         .show();
 
+                // We'll need the JSONArray in other methods in this class
+                mCountryArray = jsonArray;
+
                 // Parse the JSONArray returned and add names to the dataset
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    mCountryList.add(jsonArray.optJSONObject(i).optString("name"));
+                for (int i = 0; i < mCountryArray.length(); i++) {
+                    mCountryList.add(mCountryArray.optJSONObject(i).optString("name"));
                 }
 
                 // Update the ListView
@@ -150,6 +154,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Log the item's position and contents to the console in Debug
-        Log.d("omg android", position + ": " + mCountryList.get(position));
+        Log.d("omg android", position
+                + ": "
+                + mCountryArray.optJSONObject(position).optString("name")
+                + " ("
+                + mCountryArray.optJSONObject(position).optString("id")
+                + ")");
     }
 }
