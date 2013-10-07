@@ -14,6 +14,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -56,6 +62,28 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
+
+        // Create a client to perform networking for us
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://open.undp.org/api/donor-country-index.json", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+                Toast.makeText(getApplicationContext(),
+                        "Success!",
+                        Toast.LENGTH_LONG)
+                        .show();
+            }
+
+            @Override
+            public void onFailure(Throwable throwable, String s) {
+                Toast.makeText(getApplicationContext(),
+                        "Error: " + throwable.getMessage() + " " + s,
+                        Toast.LENGTH_LONG)
+                        .show();
+            }
+
+        });
+
     }
 
 
