@@ -30,7 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     EditText mainEditText;
     ListView mainListView;
     ArrayAdapter<String> mArrayAdapter;
-    ArrayList<String> mNameList = new ArrayList<String>();
+    ArrayList<String> mCountryList = new ArrayList<String>();
     ShareActionProvider mShareActionProvider;
 
     @Override
@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         // Create an ArrayAdapter for the ListView
         mArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
-                mNameList);
+                mCountryList);
 
         // Set the ListView to use the ArrayAdapter
         mainListView.setAdapter(mArrayAdapter);
@@ -68,22 +68,35 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         client.get("http://open.undp.org/api/donor-country-index.json", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
+
+                // Display a "Toast" message to announce our success
                 Toast.makeText(getApplicationContext(),
                         "Success!",
                         Toast.LENGTH_LONG)
                         .show();
+
+                // Parse the JSONArray returned and add names to the dataset
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    mCountryList.add(jsonArray.optJSONObject(i).optString("name"));
+                }
+
+                // Update the ListView
+                // this is the quick and dirty way-- better to subclass the adapter to accept JSON
+                mArrayAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Throwable throwable, String s) {
+
+                // Display a "Toast" message to announce the failure
                 Toast.makeText(getApplicationContext(),
                         "Error: " + throwable.getMessage() + " " + s,
                         Toast.LENGTH_LONG)
                         .show();
+
+                Log.e("omg android", throwable.getMessage() + " " + s);
             }
-
         });
-
     }
 
 
@@ -128,17 +141,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 + " is an Android developer!");
 
         // 3. Also add that value to the list shown in the ListView
-        mNameList.add(mainEditText.getText().toString());
+        mCountryList.add(mainEditText.getText().toString());
         mArrayAdapter.notifyDataSetChanged();
 
         // 4. The text we'd like to share has changed, and we need to update
         setShareIntent();
-
     }
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Log the item's position and contents to the console in Debug
-        Log.d("omg android", position + ": " + mNameList.get(position));
-
+        Log.d("omg android", position + ": " + mCountryList.get(position));
     }
 }
