@@ -24,4 +24,11 @@
             android:layout_margin="20dp"
             android:text="Update The TextView"/>
 
+    <EditText
+            android:id="@+id/main_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Your Name"
+            />
+
 </LinearLayout>
