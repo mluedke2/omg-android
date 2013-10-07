@@ -66,7 +66,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // Create a client to perform networking for us
         AsyncHttpClient client = new AsyncHttpClient();
+
+        // Have the client get a JSONArray of data, and define how to respond
         client.get("http://open.undp.org/api/donor-country-index.json", new JsonHttpResponseHandler() {
+
             @Override
             public void onSuccess(JSONArray jsonArray) {
 
@@ -85,7 +88,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 }
 
                 // Update the ListView
-                // this is the quick and dirty way-- better to subclass the adapter to accept JSON
+                // This is the quick and dirty way. Better to subclass the adapter to accept JSON
                 mArrayAdapter.notifyDataSetChanged();
             }
 
@@ -98,6 +101,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                         Toast.LENGTH_LONG)
                         .show();
 
+                // Log error message to help solve any problems
                 Log.e("omg android", throwable.getMessage() + " " + s);
             }
         });
@@ -119,6 +123,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         }
 
         // Create an Intent to share our content
+        // It is in a separate method so we can call it from elsewhere too
         setShareIntent();
 
         return true;
@@ -153,6 +158,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     }
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         // Log the item's position and contents to the console in Debug
         Log.d("omg android", position
                 + ": "
