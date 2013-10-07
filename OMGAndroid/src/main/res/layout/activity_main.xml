@@ -1,3 +1,4 @@
+<!-- Lays out its children in order, vertically -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
@@ -11,12 +12,14 @@
               android:orientation="vertical"
         >
 
+    <!-- Displays a defined piece of text -->
     <TextView
             android:id="@+id/main_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hello_world"/>
 
+    <!-- Set OnClickListener to trigger results when pressed -->
     <Button
             android:id="@+id/main_button"
             android:layout_width="wrap_content"
@@ -24,6 +27,7 @@
             android:layout_margin="20dp"
             android:text="Update The TextView"/>
 
+    <!-- Displays keyboard when touched -->
     <EditText
             android:id="@+id/main_edittext"
             android:layout_width="wrap_content"
@@ -31,6 +35,7 @@
             android:hint="Your Name"
             />
 
+    <!-- Dataset defined in code with an adapter -->
     <ListView
         android:id="@+id/main_listview"
         android:layout_width="match_parent"
