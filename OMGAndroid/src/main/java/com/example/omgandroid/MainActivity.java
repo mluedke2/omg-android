@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,18 +20,14 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     TextView mainTextView;
     Button mainButton;
     EditText mainEditText;
     ListView mainListView;
-    ArrayAdapter<String> mArrayAdapter;
-    ArrayList<String> mCountryList = new ArrayList<String>();
     ShareActionProvider mShareActionProvider;
-    JSONArray mCountryArray;
+    JSONArrayAdapter mJSONArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +36,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // Access the TextView defined in layout XML and set its text
         mainTextView = (TextView) findViewById(R.id.main_textview);
-        //mainTextView.setText("Set in Java");
 
         // Access the Button defined in layout XML and listen for it with this activity
         mainButton = (Button) findViewById(R.id.main_button);
@@ -53,13 +47,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         // Access the ListView
         mainListView = (ListView) findViewById(R.id.main_listview);
 
-        // Create an ArrayAdapter for the ListView
-        mArrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                mCountryList);
+        // Create a JSONArrayAdapter for the ListView
+        mJSONArrayAdapter = new JSONArrayAdapter(this, new JSONArray());
 
         // Set the ListView to use the ArrayAdapter
-        mainListView.setAdapter(mArrayAdapter);
+        mainListView.setAdapter(mJSONArrayAdapter);
 
         // Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
@@ -79,17 +71,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                         Toast.LENGTH_LONG)
                         .show();
 
-                // We'll need the JSONArray in other methods in this class
-                mCountryArray = jsonArray;
-
-                // Parse the JSONArray returned and add names to the dataset
-                for (int i = 0; i < mCountryArray.length(); i++) {
-                    mCountryList.add(mCountryArray.optJSONObject(i).optString("name"));
-                }
-
-                // Update the ListView
-                // This is the quick and dirty way. Better to subclass the adapter to accept JSON
-                mArrayAdapter.notifyDataSetChanged();
+                // Now we are being wise and have created the JSONArrayAdapter subclass
+                // update the data in our custom method.
+                mJSONArrayAdapter.updateData(jsonArray);
             }
 
             @Override
@@ -142,18 +126,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     }
 
     @Override public void onClick(View v) {
-        // 1. Test the Button
-        //  mainTextView.setText("Button pressed!");
 
-        // 2. Take what was typed into the EditText and use in TextView
+        // Take what was typed into the EditText and use in TextView
         mainTextView.setText(mainEditText.getText().toString()
-                + " is an Android developer!");
+                + " is learning Android development!");
 
-        // 3. Also add that value to the list shown in the ListView
-        mCountryList.add(mainEditText.getText().toString());
-        mArrayAdapter.notifyDataSetChanged();
-
-        // 4. The text we'd like to share has changed, and we need to update
+        // The text we'd like to share has changed, and we need to update
         setShareIntent();
     }
 
@@ -162,9 +140,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         // Log the item's position and contents to the console in Debug
         Log.d("omg android", position
                 + ": "
-                + mCountryArray.optJSONObject(position).optString("name")
+                + mJSONArrayAdapter.getItem(position).optString("name")
                 + " ("
-                + mCountryArray.optJSONObject(position).optString("id")
+                + mJSONArrayAdapter.getItem(position).optString("id")
                 + ")");
     }
 }
