@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="75dp">
+
+    <ImageView
+        android:id="@+id/img_thumbnail"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="true"
+        android:layout_marginLeft="25dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_books"
+        />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/img_thumbnail"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="25dp"
+        android:text="Title"
+        />
+
+    <TextView
+        android:id="@+id/text_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/img_thumbnail"
+        android:layout_below="@+id/text_title"
+        android:layout_alignLeft="@+id/text_title"
+        android:text="Author"
+        />
+
+</RelativeLayout>
