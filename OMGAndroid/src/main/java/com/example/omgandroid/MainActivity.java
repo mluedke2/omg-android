@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
@@ -27,7 +27,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     EditText mainEditText;
     ListView mainListView;
     ShareActionProvider mShareActionProvider;
-    JSONArrayAdapter mJSONArrayAdapter;
+    JSONAdapter mJSONAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +47,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         // Access the ListView
         mainListView = (ListView) findViewById(R.id.main_listview);
 
-        // Create a JSONArrayAdapter for the ListView
-        mJSONArrayAdapter = new JSONArrayAdapter(this, new JSONArray());
+        // Create a JSONAdapter for the ListView
+        mJSONAdapter = new JSONAdapter(this);
 
         // Set the ListView to use the ArrayAdapter
-        mainListView.setAdapter(mJSONArrayAdapter);
+        mainListView.setAdapter(mJSONAdapter);
 
         // Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
@@ -60,10 +60,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         AsyncHttpClient client = new AsyncHttpClient();
 
         // Have the client get a JSONArray of data, and define how to respond
-        client.get("http://open.undp.org/api/donor-country-index.json", new JsonHttpResponseHandler() {
+        client.get("http://openlibrary.org/search.json?q=the+lord+of+the+rings", new JsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(JSONArray jsonArray) {
+            public void onSuccess(JSONObject jsonObject) {
 
                 // Display a "Toast" message to announce our success
                 Toast.makeText(getApplicationContext(),
@@ -71,9 +71,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                         Toast.LENGTH_LONG)
                         .show();
 
-                // Now we are being wise and have created the JSONArrayAdapter subclass
+                // Now we are being wise and have created the JSONAdapter subclass
                 // update the data in our custom method.
-                mJSONArrayAdapter.updateData(jsonArray);
+                mJSONAdapter.updateData(jsonObject);
             }
 
             @Override
@@ -140,9 +140,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         // Log the item's position and contents to the console in Debug
         Log.d("omg android", position
                 + ": "
-                + mJSONArrayAdapter.getItem(position).optString("name")
+                + mJSONAdapter.getItem(position).optString("name")
                 + " ("
-                + mJSONArrayAdapter.getItem(position).optString("id")
+                + mJSONAdapter.getItem(position).optString("id")
                 + ")");
     }
 }
