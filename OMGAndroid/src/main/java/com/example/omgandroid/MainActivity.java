@@ -38,9 +38,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // We want to add a spinning progress bar (and make sure it's off)
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(false);
 
+        // We have to tell the activity which XML layout is the right one
         setContentView(R.layout.activity_main);
 
         // Access the TextView defined in layout XML and set its text
@@ -108,7 +110,19 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        // start an Activity that will show a large version of the book cover
+        // Now that the user's chosen a book, let's grab the cover data
+        String coverID = mJSONAdapter.getItem(position).optString("cover_i","");
+
+        // create an Intent to take us over to a new DetailActivity
+        Intent detailIntent = new Intent(this, DetailActivity.class);
+
+        // pack away the data about the cover into our Intent before we head out
+        detailIntent.putExtra("coverID", coverID);
+
+        // TODO: add any other data we'd like as Extras
+
+        // start the next Activity using our prepared Intent
+        startActivity(detailIntent);
     }
 
     private void queryBooks(String searchString) {
@@ -119,6 +133,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         try {
            urlString = URLEncoder.encode(searchString, "UTF-8");
         } catch (UnsupportedEncodingException e) {
+
+            // if this fails for some reason, let the user know why
             e.printStackTrace();
             Toast.makeText(this,
                     "Error: " + e.getMessage(),
