@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,8 +21,12 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    private static final String QUERY_URL = "http://openlibrary.org/search.json?q=";
     TextView mainTextView;
     Button mainButton;
     EditText mainEditText;
@@ -32,6 +37,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(false);
+
         setContentView(R.layout.activity_main);
 
         // Access the TextView defined in layout XML and set its text
@@ -55,40 +64,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
-
-        // Create a client to perform networking for us
-        AsyncHttpClient client = new AsyncHttpClient();
-
-        // Have the client get a JSONArray of data, and define how to respond
-        client.get("http://openlibrary.org/search.json?q=the+lord+of+the+rings", new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-
-                // Display a "Toast" message to announce our success
-                Toast.makeText(getApplicationContext(),
-                        "Success!",
-                        Toast.LENGTH_LONG)
-                        .show();
-
-                // Now we are being wise and have created the JSONAdapter subclass
-                // update the data in our custom method.
-                mJSONAdapter.updateData(jsonObject);
-            }
-
-            @Override
-            public void onFailure(Throwable throwable, String s) {
-
-                // Display a "Toast" message to announce the failure
-                Toast.makeText(getApplicationContext(),
-                        "Error: " + throwable.getMessage() + " " + s,
-                        Toast.LENGTH_LONG)
-                        .show();
-
-                // Log error message to help solve any problems
-                Log.e("omg android", throwable.getMessage() + " " + s);
-            }
-        });
     }
 
 
@@ -127,22 +102,70 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     @Override public void onClick(View v) {
 
-        // Take what was typed into the EditText and use in TextView
-        mainTextView.setText(mainEditText.getText().toString()
-                + " is learning Android development!");
-
-        // The text we'd like to share has changed, and we need to update
-        setShareIntent();
+        // Take what was typed into the EditText and use in search
+        queryBooks(mainEditText.getText().toString());
     }
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        // Log the item's position and contents to the console in Debug
-        Log.d("omg android", position
-                + ": "
-                + mJSONAdapter.getItem(position).optString("name")
-                + " ("
-                + mJSONAdapter.getItem(position).optString("id")
-                + ")");
+        // start an Activity that will show a large version of the book cover
+    }
+
+    private void queryBooks(String searchString) {
+
+        // Prepare our search string to be put in a URL
+        // It might have reserved characters or something
+        String urlString = "";
+        try {
+           urlString = URLEncoder.encode(searchString, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            Toast.makeText(this,
+                    "Error: " + e.getMessage(),
+                    Toast.LENGTH_LONG)
+                    .show();
+        }
+
+        // Create a client to perform networking for us
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        setProgressBarIndeterminateVisibility(true);
+        //mProgressBar.setVisibility(View.VISIBLE);
+
+        // Have the client get a JSONArray of data, and define how to respond
+        client.get(QUERY_URL + urlString,
+                new JsonHttpResponseHandler() {
+
+                    @Override
+                    public void onSuccess(JSONObject jsonObject) {
+
+                        setProgressBarIndeterminateVisibility(false);
+
+                        // Display a "Toast" message to announce our success
+                        Toast.makeText(getApplicationContext(),
+                                "Success!",
+                                Toast.LENGTH_LONG)
+                                .show();
+
+                        // Now we are being wise and have created the JSONAdapter subclass
+                        // update the data in our custom method.
+                        mJSONAdapter.updateData(jsonObject);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable, String s) {
+
+                        setProgressBarIndeterminateVisibility(false);
+
+                        // Display a "Toast" message to announce the failure
+                        Toast.makeText(getApplicationContext(),
+                                "Error: " + throwable.getMessage() + " " + s,
+                                Toast.LENGTH_LONG)
+                                .show();
+
+                        // Log error message to help solve any problems
+                        Log.e("omg android", throwable.getMessage() + " " + s);
+                    }
+                });
     }
 }

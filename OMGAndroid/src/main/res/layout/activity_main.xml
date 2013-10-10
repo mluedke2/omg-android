@@ -17,7 +17,7 @@
             android:id="@+id/main_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world"/>
+            android:text="@string/textview_prompt"/>
 
     <!-- Set OnClickListener to trigger results when pressed -->
     <Button
@@ -25,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Update The TextView"/>
+            android:text="@string/btn_search"/>
 
     <!-- Displays keyboard when touched -->
     <EditText
             android:id="@+id/main_edittext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Your Name"
+            android:hint="@string/edittext_hint"
             />
 
     <!-- Dataset defined in code with an adapter -->
