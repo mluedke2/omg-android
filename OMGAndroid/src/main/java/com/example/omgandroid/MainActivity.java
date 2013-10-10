@@ -68,7 +68,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         mainListView.setOnItemClickListener(this);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
