@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="18" />
 
     <!-- NEED TO ADD TO BE ABLE TO GO ONLINE AND GET DATA -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,7 +27,11 @@
         </activity>
         <activity
             android:name=".DetailActivity"
-            android:label="Book Details"/>
+            android:label="Book Details"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".MainActivity" />
+        </activity>
     </application>
-
 </manifest>
