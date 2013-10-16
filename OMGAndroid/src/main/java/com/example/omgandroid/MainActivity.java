@@ -148,7 +148,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // 2. Take what was typed into the EditText and use in TextView
         mainTextView.setText(mainEditText.getText().toString()
-                + " is learning Android!");
+                + " is learning Android development!");
 
         // 3. Also add that value to the list shown in the ListView
         mNameList.add(mainEditText.getText().toString());
