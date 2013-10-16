@@ -65,6 +65,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         // Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
 
+        // Greet the user, or ask for their name if new
+        displayWelcome();
+    }
+
+    public void displayWelcome() {
+
         // Access the device's key-value storage
         mSharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
 
