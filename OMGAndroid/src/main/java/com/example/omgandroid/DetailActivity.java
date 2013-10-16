@@ -41,9 +41,8 @@ public class DetailActivity extends Activity {
         // Use Picasso to load the image
         Picasso.with(this)
                 .load(mImageURL)
-                .placeholder(R.drawable.img_books_large)
+                .placeholder(R.drawable.img_books_loading)
                 .into(imageView);
-
         } else {
 
             // If the coverID is invalid, just use a placeholder
