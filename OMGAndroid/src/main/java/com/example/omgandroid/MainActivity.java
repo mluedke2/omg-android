@@ -1,7 +1,10 @@
 package com.example.omgandroid;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,12 +29,16 @@ import java.net.URLEncoder;
 
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    private static final String PREFS = "prefs";
+    private static final String PREF_NAME = "name";
     private static final String QUERY_URL = "http://openlibrary.org/search.json?q=";
+
     TextView mainTextView;
     Button mainButton;
     EditText mainEditText;
     ListView mainListView;
     ShareActionProvider mShareActionProvider;
+    SharedPreferences mSharedPreferences;
     JSONAdapter mJSONAdapter;
 
     @Override
@@ -66,6 +73,56 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
+
+        // Greet the user, or ask for their name if new
+        displayWelcome();
+    }
+
+    public void displayWelcome() {
+
+        // Access the device's key-value storage
+        mSharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+
+        // Read the user's name, or an empty string if nothing found
+        String name = mSharedPreferences.getString(PREF_NAME, "");
+
+        if (name.length() > 0) {
+
+            // If the name is valid, display a Toast welcoming them
+            Toast.makeText(this,
+                    "Welcome back, " + name + "!",
+                    Toast.LENGTH_LONG)
+                    .show();
+        } else {
+
+            // otherwise, show a dialog to ask for their name
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Hello!");
+            alert.setMessage("What is your name?");
+
+            // Create EditText for entry
+            final EditText input = new EditText(this);
+            alert.setView(input);
+
+            // Make an "OK" button to save the name
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    // Put the EditText's input into memory (don't forget to commit!)
+                    SharedPreferences.Editor e = mSharedPreferences.edit();
+                    e.putString(PREF_NAME, input.getText().toString());
+                    e.commit();
+                }
+            });
+
+            // Make a "Cancel" button that simply dismisses the alert
+            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+
+            alert.show();
+        }
     }
 
     @Override
