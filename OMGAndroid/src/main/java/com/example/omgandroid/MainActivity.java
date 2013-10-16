@@ -100,16 +100,16 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     // Grab the EditText's input
-                    String name = input.getText().toString();
+                    String inputName = input.getText().toString();
 
                     // Put it into memory (don't forget to commit!)
                     SharedPreferences.Editor e = mSharedPreferences.edit();
-                    e.putString(PREF_NAME, name);
+                    e.putString(PREF_NAME, inputName);
                     e.commit();
 
                     // Welcome the new user
                     Toast.makeText(getApplicationContext(),
-                            "Welcome, " + name + "!",
+                            "Welcome, " + inputName + "!",
                             Toast.LENGTH_LONG)
                             .show();
                 }
