@@ -19,20 +19,37 @@
             android:layout_height="wrap_content"
             android:text="@string/hello_world"/>
 
-    <!-- Set OnClickListener to trigger results when pressed -->
-    <Button
-            android:id="@+id/main_button"
+    <!-- This nested layout contains views of its own -->
+    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="Update The TextView"/>
+            android:orientation="horizontal"
+            >
+
+        <!-- Set OnClickListener to trigger results when pressed -->
+        <Button
+                android:id="@+id/main_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Update The TextView"/>
+
+        <!-- Shows an image from our drawable resources -->
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:src="@drawable/ic_books"
+                />
+
+    </LinearLayout>
 
     <!-- Displays keyboard when touched -->
     <EditText
             android:id="@+id/main_edittext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Your Name"
+            android:hint="A Name"
             />
 
     <!-- Dataset defined in code with an adapter -->
