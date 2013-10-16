@@ -27,11 +27,12 @@
             android:layout_margin="20dp"
             android:text="@string/btn_search"/>
 
-    <!-- Displays keyboard when touched -->
+    <!-- Displays keyboard when active -->
     <EditText
             android:id="@+id/main_edittext"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:hint="@string/edittext_hint"
             />
 
