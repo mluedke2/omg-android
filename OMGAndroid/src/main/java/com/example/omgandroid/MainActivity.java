@@ -99,10 +99,19 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    // Put the EditText's input into memory (don't forget to commit!)
+                    // Grab the EditText's input
+                    String name = input.getText().toString();
+
+                    // Put it into memory (don't forget to commit!)
                     SharedPreferences.Editor e = mSharedPreferences.edit();
-                    e.putString(PREF_NAME, input.getText().toString());
+                    e.putString(PREF_NAME, name);
                     e.commit();
+
+                    // Welcome the new user
+                    Toast.makeText(getApplicationContext(),
+                            "Welcome, " + name + "!",
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
             });
 
