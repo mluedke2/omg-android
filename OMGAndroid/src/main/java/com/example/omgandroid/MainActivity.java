@@ -177,6 +177,5 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Log the item's position and contents to the console in Debug
         Log.d("omg android", position + ": " + mNameList.get(position));
-
     }
 }
