@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.omgandroid"
-    android:versionCode="1"
-    android:versionName="1.0" >
+          package="com.example.omgandroid"
+          android:versionCode="1"
+          android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="18" />
+            android:minSdkVersion="14"
+            android:targetSdkVersion="18"/>
 
     <!-- NEED TO ADD TO BE ABLE TO GO ONLINE AND GET DATA -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_books"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+            android:allowBackup="true"
+            android:icon="@drawable/ic_books"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.omgandroid.MainActivity"
-            android:label="@string/app_name" >
+                android:name="com.example.omgandroid.MainActivity"
+                android:label="@string/app_name"
+                android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
-            android:label="Book Details"
-            android:parentActivityName=".MainActivity">
+                android:name=".DetailActivity"
+                android:label="Book Details"
+                android:parentActivityName=".MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".MainActivity" />
+                    android:value=".MainActivity"/>
         </activity>
     </application>
 </manifest>

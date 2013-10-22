@@ -80,5 +80,4 @@ public class DetailActivity extends Activity {
         // Make sure the provider knows it should work with that Intent
         mShareActionProvider.setShareIntent(shareIntent);
     }
-
 }
