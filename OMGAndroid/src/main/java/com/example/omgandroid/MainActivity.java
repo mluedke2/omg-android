@@ -171,7 +171,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // 4. The text we'd like to share has changed, and we need to update
         setShareIntent();
-
     }
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

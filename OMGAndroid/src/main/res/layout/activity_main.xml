@@ -26,7 +26,8 @@
             android:orientation="horizontal"
             >
 
-        <!-- Set OnClickListener to trigger results when pressed -->
+        <!-- Set OnClickListener 
+            to trigger results when pressed -->
         <Button
                 android:id="@+id/main_button"
                 android:layout_width="wrap_content"
