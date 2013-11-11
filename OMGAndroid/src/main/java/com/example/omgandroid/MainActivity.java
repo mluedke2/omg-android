@@ -234,18 +234,18 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                     }
 
                     @Override
-                    public void onFailure(Throwable throwable, String s) {
+                    public void onFailure(Throwable throwable, JSONObject error) {
 
                         setProgressBarIndeterminateVisibility(false);
 
                         // Display a "Toast" message to announce the failure
                         Toast.makeText(getApplicationContext(),
-                                "Error: " + throwable.getMessage() + " " + s,
+                                "Error: " + throwable.getMessage() + " " + error.toString(),
                                 Toast.LENGTH_LONG)
                                 .show();
 
                         // Log error message to help solve any problems
-                        Log.e("omg android", throwable.getMessage() + " " + s);
+                        Log.e("omg android", throwable.getMessage() + " " + error.toString());
                     }
                 });
     }
