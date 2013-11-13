@@ -74,7 +74,7 @@ public class JSONAdapter extends BaseAdapter {
 
             // Construct the image URL (specific to API)
             String imageURL = "http://covers.openlibrary.org/b/id/"
-                    + jsonObject.optString("cover_i")
+                    + imageID
                     + "-S.jpg";
 
             // Use Picasso to load the image
