@@ -15,6 +15,9 @@ import org.json.JSONObject;
 
 public class JSONAdapter extends BaseAdapter {
 
+    private static final String IMAGE_URL_BASE
+            = "http://covers.openlibrary.org/b/id/";
+
     Context mContext;
     LayoutInflater mInflater;
     JSONArray mJsonArray;
@@ -73,7 +76,7 @@ public class JSONAdapter extends BaseAdapter {
             String imageID = jsonObject.optString("cover_i");
 
             // Construct the image URL (specific to API)
-            String imageURL = "http://covers.openlibrary.org/b/id/"
+            String imageURL = IMAGE_URL_BASE
                     + imageID
                     + "-S.jpg";
 
@@ -90,11 +93,17 @@ public class JSONAdapter extends BaseAdapter {
         }
 
         // Grab the title and author from the JSON
-        String bookTitle = jsonObject.optString("title");
-        String authorName = jsonObject.optString("author_name");
+        String bookTitle = "";
+        String authorName = "";
 
-        // the author comes back with extra characters, so remove those
-        authorName = authorName.replace("[", "").replace("\"", "").replace("]", "");
+        if (jsonObject.has("title")) {
+            bookTitle = jsonObject.optString("title");
+        }
+
+        if (jsonObject.has("author_name")) {
+            authorName = jsonObject.optJSONArray("author_name")
+                    .optString(0);
+        }
 
         // Send these Strings to the TextViews for display
         titleTextView.setText(bookTitle);
