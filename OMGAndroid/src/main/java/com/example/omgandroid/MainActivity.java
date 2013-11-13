@@ -66,7 +66,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         mainListView = (ListView) findViewById(R.id.main_listview);
 
         // Create a JSONAdapter for the ListView
-        mJSONAdapter = new JSONAdapter(this);
+        mJSONAdapter = new JSONAdapter(getApplicationContext(),
+                getLayoutInflater());
 
         // Set the ListView to use the ArrayAdapter
         mainListView.setAdapter(mJSONAdapter);

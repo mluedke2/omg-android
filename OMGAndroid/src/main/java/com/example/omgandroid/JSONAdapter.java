@@ -1,6 +1,7 @@
 package com.example.omgandroid;
 
-import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,11 +15,15 @@ import org.json.JSONObject;
 
 public class JSONAdapter extends BaseAdapter {
 
-    Activity mActivity;
+    Context mContext;
+    LayoutInflater mInflater;
     JSONArray mJsonArray;
 
-    public JSONAdapter(Activity activity) {
-        mActivity = activity;
+    public JSONAdapter(Context context,
+                       LayoutInflater inflater) {
+
+        mContext = context;
+        mInflater = inflater;
         mJsonArray = new JSONArray();
     }
 
@@ -39,8 +44,8 @@ public class JSONAdapter extends BaseAdapter {
 
     @Override public long getItemId(int position) {
 
-        // our particular dataset uses String IDs
-        // but we had to put something in this method
+        // your particular dataset uses String IDs
+        // but you have to put something in this method
         return 0;
     }
 
@@ -49,11 +54,11 @@ public class JSONAdapter extends BaseAdapter {
         // if the view already exists, no need to inflate again!
         if (convertView == null) {
 
-            // There's a standard list item in Android XML. We're going to inflate that.
-            convertView = mActivity.getLayoutInflater().inflate(R.layout.row_book, null);
+            // Inflate the custom row layout from your XML.
+            convertView = mInflater.inflate(R.layout.row_book, null);
         }
 
-        // Initialize the three views we will be populating
+        // Initialize the three views you will be populating
         ImageView thumbnailImageView = (ImageView) convertView.findViewById(R.id.img_thumbnail);
         TextView titleTextView = (TextView) convertView.findViewById(R.id.text_title);
         TextView authorTextView = (TextView) convertView.findViewById(R.id.text_author);
@@ -67,14 +72,14 @@ public class JSONAdapter extends BaseAdapter {
             // If so, grab the Cover ID out from the object
             String imageID = jsonObject.optString("cover_i");
 
-            // Construct the image URL (specific to the API we're calling)
+            // Construct the image URL (specific to API)
             String imageURL = "http://covers.openlibrary.org/b/id/"
                     + jsonObject.optString("cover_i")
                     + "-S.jpg";
 
             // Use Picasso to load the image
             // Temporarily have a placeholder in case it's slow to load
-            Picasso.with(mActivity)
+            Picasso.with(mContext)
                     .load(imageURL)
                     .placeholder(R.drawable.ic_books)
                     .into(thumbnailImageView);
@@ -88,7 +93,7 @@ public class JSONAdapter extends BaseAdapter {
         String bookTitle = jsonObject.optString("title");
         String authorName = jsonObject.optString("author_name");
 
-        // the author comes back with extra characters, so let's remove those
+        // the author comes back with extra characters, so remove those
         authorName = authorName.replace("[", "").replace("\"", "").replace("]", "");
 
         // Send these Strings to the TextViews for display
