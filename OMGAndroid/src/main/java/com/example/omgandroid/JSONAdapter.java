@@ -52,19 +52,41 @@ public class JSONAdapter extends BaseAdapter {
         return 0;
     }
 
+    // this is used so you only ever have to do
+    // inflation and finding by ID once ever per View
+    private static class ViewHolder {
+        public ImageView thumbnailImageView;
+        public TextView titleTextView;
+        public TextView authorTextView;
+    }
+
     @Override public View getView(int position, View convertView, ViewGroup parent) {
 
-        // if the view already exists, no need to inflate again!
+        ViewHolder holder;
+
+        // if the view already exists, no need to inflate and findById again!
         if (convertView == null) {
 
             // Inflate the custom row layout from your XML.
             convertView = mInflater.inflate(R.layout.row_book, null);
-        }
 
-        // Initialize the three views you will be populating
-        ImageView thumbnailImageView = (ImageView) convertView.findViewById(R.id.img_thumbnail);
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.text_title);
-        TextView authorTextView = (TextView) convertView.findViewById(R.id.text_author);
+            // create a new "Holder" with subviews
+            holder = new ViewHolder();
+            holder.thumbnailImageView =
+                    (ImageView) convertView.findViewById(R.id.img_thumbnail);
+            holder.titleTextView =
+                    (TextView) convertView.findViewById(R.id.text_title);
+            holder.authorTextView =
+                    (TextView) convertView.findViewById(R.id.text_author);
+
+            // hang onto this holder for future recyclage
+            convertView.setTag(holder);
+        } else {
+
+            // skip all the inflation/findByIds
+            // and just get the holder you already made
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         // Get the current book's data in JSON form
         JSONObject jsonObject = getItem(position);
@@ -85,11 +107,11 @@ public class JSONAdapter extends BaseAdapter {
             Picasso.with(mContext)
                     .load(imageURL)
                     .placeholder(R.drawable.ic_books)
-                    .into(thumbnailImageView);
+                    .into(holder.thumbnailImageView);
         } else {
 
             // If there is no cover ID in the object, use a placeholder
-            thumbnailImageView.setImageResource(R.drawable.ic_books);
+            holder.thumbnailImageView.setImageResource(R.drawable.ic_books);
         }
 
         // Grab the title and author from the JSON
@@ -106,8 +128,8 @@ public class JSONAdapter extends BaseAdapter {
         }
 
         // Send these Strings to the TextViews for display
-        titleTextView.setText(bookTitle);
-        authorTextView.setText(authorName);
+        holder.titleTextView.setText(bookTitle);
+        holder.authorTextView.setText(authorName);
 
         return convertView;
     }
