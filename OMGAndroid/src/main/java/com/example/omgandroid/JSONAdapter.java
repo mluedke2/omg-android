@@ -37,10 +37,12 @@ public class JSONAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    // how many list rows = how many books in array
     @Override public int getCount() {
         return mJsonArray.length();
     }
 
+    // this represents the book data at a given position
     @Override public JSONObject getItem(int position) {
         return mJsonArray.optJSONObject(position);
     }
@@ -64,7 +66,8 @@ public class JSONAdapter extends BaseAdapter {
 
         ViewHolder holder;
 
-        // if the view already exists, no need to inflate and findById again!
+        // check if the view already exists
+        // if so, no need to inflate and findViewById again!
         if (convertView == null) {
 
             // Inflate the custom row layout from your XML.
@@ -83,7 +86,7 @@ public class JSONAdapter extends BaseAdapter {
             convertView.setTag(holder);
         } else {
 
-            // skip all the inflation/findByIds
+            // skip all the expensive inflation/findViewById
             // and just get the holder you already made
             holder = (ViewHolder) convertView.getTag();
         }

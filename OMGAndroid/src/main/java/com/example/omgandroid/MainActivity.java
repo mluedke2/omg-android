@@ -67,17 +67,17 @@ public class MainActivity extends Activity
         // Access the ListView
         mainListView = (ListView) findViewById(R.id.main_listview);
 
-        // Create a JSONAdapter for the ListView
-        mJSONAdapter = new JSONAdapter(this, getLayoutInflater());
-
-        // Set the ListView to use the ArrayAdapter
-        mainListView.setAdapter(mJSONAdapter);
-
         // Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
 
         // Greet the user, or ask for their name if new
         displayWelcome();
+
+        // Create a JSONAdapter for the ListView
+        mJSONAdapter = new JSONAdapter(this, getLayoutInflater());
+
+        // Set the ListView to use the ArrayAdapter
+        mainListView.setAdapter(mJSONAdapter);
     }
 
     public void displayWelcome() {
@@ -213,7 +213,6 @@ public class MainActivity extends Activity
         AsyncHttpClient client = new AsyncHttpClient();
 
         setProgressBarIndeterminateVisibility(true);
-        //mProgressBar.setVisibility(View.VISIBLE);
 
         // Have the client get a JSONArray of data, and define how to respond
         client.get(QUERY_URL + urlString,
