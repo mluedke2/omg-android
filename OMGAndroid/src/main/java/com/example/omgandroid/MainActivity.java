@@ -27,7 +27,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends Activity
+        implements View.OnClickListener,
+        AdapterView.OnItemClickListener {
 
     private static final String PREFS = "prefs";
     private static final String PREF_NAME = "name";
