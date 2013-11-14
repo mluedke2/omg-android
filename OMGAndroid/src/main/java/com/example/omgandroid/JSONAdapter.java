@@ -30,10 +30,10 @@ public class JSONAdapter extends BaseAdapter {
         mJsonArray = new JSONArray();
     }
 
-    public void updateData(JSONObject jsonObject) {
+    public void updateData(JSONArray jsonArray) {
 
         // update the adapter's dataset
-        mJsonArray = jsonObject.optJSONArray("docs");
+        mJsonArray = jsonArray;
         notifyDataSetChanged();
     }
 

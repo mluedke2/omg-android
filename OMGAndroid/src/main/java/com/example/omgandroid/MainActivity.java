@@ -230,9 +230,8 @@ public class MainActivity extends Activity
                                 Toast.LENGTH_LONG)
                                 .show();
 
-                        // Now we are being wise and have created the JSONAdapter subclass
-                        // update the data in our custom method.
-                        mJSONAdapter.updateData(jsonObject);
+                        // update the data in your custom method.
+                        mJSONAdapter.updateData(jsonObject.optJSONArray("docs"));
                     }
 
                     @Override
