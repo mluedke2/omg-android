@@ -23,9 +23,6 @@ public class DetailActivity extends Activity {
         // We have to tell the activity which XML layout is the right one
         setContentView(R.layout.activity_detail);
 
-        // Enable the "Up" button for more navigation options
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
         // Access the imageview from XML
         ImageView imageView = (ImageView) findViewById(R.id.img_cover);
 
@@ -48,6 +45,9 @@ public class DetailActivity extends Activity {
             // If the coverID is invalid, just use a placeholder
             imageView.setImageResource(R.drawable.img_books_large);
         }
+
+        // Enable the "Up" button for more navigation options
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -64,18 +64,18 @@ public class DetailActivity extends Activity {
             mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
         }
 
-        setShareIntent(mImageURL);
+        setShareIntent();
 
         return true;
     }
 
-    private void setShareIntent(String imageURL) {
+    private void setShareIntent() {
 
         // create an Intent with the contents of the TextView
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Book Recommendation!");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, imageURL);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mImageURL);
 
         // Make sure the provider knows it should work with that Intent
         mShareActionProvider.setShareIntent(shareIntent);
