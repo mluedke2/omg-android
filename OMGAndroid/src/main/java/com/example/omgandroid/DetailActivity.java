@@ -43,10 +43,6 @@ public class DetailActivity extends Activity {
                 .load(mImageURL)
                 .placeholder(R.drawable.img_books_loading)
                 .into(imageView);
-        } else {
-
-            // If the coverID is invalid, just use a placeholder
-            imageView.setImageResource(R.drawable.img_books_large);
         }
     }
 
