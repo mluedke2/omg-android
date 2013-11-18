@@ -5,4 +5,5 @@
     <string name="textview_prompt">Search For Books!</string>
     <string name="btn_search">Search</string>
     <string name="edittext_hint">Title, Author, etc</string>
+    <string name="activity_details">Book Details</string>
 </resources>

@@ -20,8 +20,11 @@ public class DetailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // We have to tell the activity which XML layout is the right one
+        // Tell the activity which XML layout is right
         setContentView(R.layout.activity_detail);
+
+        // Enable the "Up" button for more navigation options
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Access the imageview from XML
         ImageView imageView = (ImageView) findViewById(R.id.img_cover);
@@ -45,9 +48,6 @@ public class DetailActivity extends Activity {
             // If the coverID is invalid, just use a placeholder
             imageView.setImageResource(R.drawable.img_books_large);
         }
-
-        // Enable the "Up" button for more navigation options
-        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

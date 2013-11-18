@@ -27,7 +27,7 @@
         </activity>
         <activity
                 android:name=".DetailActivity"
-                android:label="Book Details"
+                android:label="@string/activity_details"
                 android:parentActivityName=".MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
