@@ -175,7 +175,10 @@ public class MainActivity extends Activity
         queryBooks(mainEditText.getText().toString());
     }
 
-    @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    @Override public void onItemClick(AdapterView<?> parent,
+                                      View view,
+                                      int position,
+                                      long id) {
 
         // Now that the user's chosen a book, let's grab the cover data
         String coverID = mJSONAdapter.getItem(position).optString("cover_i","");

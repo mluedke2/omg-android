@@ -11,9 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="25dp"
         android:layout_centerVertical="true"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_books"
-        />
+        android:scaleType="centerInside"/>
 
     <TextView
         android:id="@+id/text_title"
@@ -21,9 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/img_thumbnail"
         android:layout_alignTop="@+id/img_thumbnail"
-        android:layout_marginLeft="25dp"
-        android:text="Title"
-        />
+        android:layout_marginLeft="25dp"/>
 
     <TextView
         android:id="@+id/text_author"
@@ -31,8 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/img_thumbnail"
         android:layout_below="@+id/text_title"
-        android:layout_alignLeft="@+id/text_title"
-        android:text="Author"
-        />
+        android:layout_alignLeft="@+id/text_title"/>
 
 </RelativeLayout>
