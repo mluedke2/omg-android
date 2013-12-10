@@ -1,48 +1,40 @@
-<!-- Lays out its children in order, vertically -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              tools:context=".MainActivity"
-              android:gravity="center"
-              android:orientation="vertical"
-        >
+              android:orientation="vertical">
 
-    <!-- Displays a defined piece of text -->
     <TextView
             android:id="@+id/main_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world"/>
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"/>
 
     <!-- This nested layout contains views of its own -->
     <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
-        <!-- Set OnClickListener 
+        <!-- Set OnClickListener
             to trigger results when pressed -->
         <Button
                 android:id="@+id/main_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="Update The TextView"/>
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:text="Update The TextView" />
 
-        <!-- Shows an image from our drawable resources -->
+        <!-- Shows an image from your drawable resources -->
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:src="@drawable/ic_books"
-                />
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_launcher" />
 
+        <!-- Closing tag for the horizontal nested layout -->
     </LinearLayout>
 
     <!-- Displays keyboard when touched -->
@@ -50,15 +42,15 @@
             android:id="@+id/main_edittext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="A Name"
-            />
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:hint="@string/hint" />
 
-    <!-- Dataset defined in code with an adapter -->
+    <!-- List whose dataset is defined in code with an adapter -->
     <ListView
             android:id="@+id/main_listview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            />
-
+            android:layout_marginTop="20dp" />
 </LinearLayout>
