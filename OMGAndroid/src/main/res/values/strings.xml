@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Bookmaster General</string>
-    <string name="action_settings">Settings</string>
-    <string name="textview_prompt">Search For Books!</string>
-    <string name="btn_search">Search</string>
-    <string name="edittext_hint">Title, Author, etc</string>
+    <string name="textview">Search For Books!</string>
+    <string name="button">Search</string>
+    <string name="hint">Title and/or Author</string>
     <string name="activity_details">Book Details</string>
 </resources>

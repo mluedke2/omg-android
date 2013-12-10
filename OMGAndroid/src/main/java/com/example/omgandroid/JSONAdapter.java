@@ -37,12 +37,10 @@ public class JSONAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    // how many list rows = how many books in array
     @Override public int getCount() {
         return mJsonArray.length();
     }
 
-    // this represents the book data at a given position
     @Override public JSONObject getItem(int position) {
         return mJsonArray.optJSONObject(position);
     }
@@ -51,18 +49,12 @@ public class JSONAdapter extends BaseAdapter {
 
         // your particular dataset uses String IDs
         // but you have to put something in this method
-        return 0;
+        return position;
     }
 
-    // this is used so you only ever have to do
-    // inflation and finding by ID once ever per View
-    private static class ViewHolder {
-        public ImageView thumbnailImageView;
-        public TextView titleTextView;
-        public TextView authorTextView;
-    }
-
-    @Override public View getView(int position, View convertView, ViewGroup parent) {
+    @Override public View getView(int position,
+                                  View convertView,
+                                  ViewGroup parent) {
 
         ViewHolder holder;
 
@@ -76,11 +68,14 @@ public class JSONAdapter extends BaseAdapter {
             // create a new "Holder" with subviews
             holder = new ViewHolder();
             holder.thumbnailImageView =
-                    (ImageView) convertView.findViewById(R.id.img_thumbnail);
+                    (ImageView) convertView
+                            .findViewById(R.id.img_thumbnail);
             holder.titleTextView =
-                    (TextView) convertView.findViewById(R.id.text_title);
+                    (TextView) convertView
+                            .findViewById(R.id.text_title);
             holder.authorTextView =
-                    (TextView) convertView.findViewById(R.id.text_author);
+                    (TextView) convertView
+                            .findViewById(R.id.text_author);
 
             // hang onto this holder for future recyclage
             convertView.setTag(holder);
@@ -114,7 +109,8 @@ public class JSONAdapter extends BaseAdapter {
         } else {
 
             // If there is no cover ID in the object, use a placeholder
-            holder.thumbnailImageView.setImageResource(R.drawable.ic_books);
+            holder.thumbnailImageView
+                    .setImageResource(R.drawable.ic_books);
         }
 
         // Grab the title and author from the JSON
@@ -136,4 +132,13 @@ public class JSONAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    // this is used so you only ever have to do
+    // inflation and finding by ID once ever per View
+    private static class ViewHolder {
+        public ImageView thumbnailImageView;
+        public TextView titleTextView;
+        public TextView authorTextView;
+    }
 }
+

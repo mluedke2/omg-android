@@ -26,54 +26,57 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class MainActivity extends Activity
         implements View.OnClickListener,
         AdapterView.OnItemClickListener {
 
-    private static final String PREFS = "prefs";
-    private static final String PREF_NAME = "name";
-    private static final String QUERY_URL = "http://openlibrary.org/search.json?q=";
-
-    TextView mainTextView;
-    Button mainButton;
-    EditText mainEditText;
-    ListView mainListView;
-    ShareActionProvider mShareActionProvider;
-    SharedPreferences mSharedPreferences;
-    JSONAdapter mJSONAdapter;
+    TextView mainTextView; // 1
+    Button mainButton; // 2
+    EditText mainEditText; // 3
+    ListView mainListView; // 4
+    JSONAdapter mJSONAdapter; // 10
+    ArrayList<String> mNameList = new ArrayList<String>();
+    ShareActionProvider mShareActionProvider; // 6
+    private static final String PREFS = "prefs"; // 7
+    private static final String PREF_NAME = "name"; // 7
+    SharedPreferences mSharedPreferences; // 7
+    private static final String QUERY_URL
+            = "http://openlibrary.org/search.json?q="; // 8
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // We want to add a spinning progress bar (and make sure it's off)
+        // 11. Add a spinning progress bar (and make sure it's off)
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(false);
 
-        // We have to tell the activity which XML layout is the right one
         setContentView(R.layout.activity_main);
 
-        // Access the TextView defined in layout XML and set its text
+        // 1. Access the TextView defined in layout XML
+        // and then set its text
         mainTextView = (TextView) findViewById(R.id.main_textview);
 
-        // Access the Button defined in layout XML and listen for it with this activity
+        // 2. Access the Button defined in layout XML
+        // and listen for it here
         mainButton = (Button) findViewById(R.id.main_button);
         mainButton.setOnClickListener(this);
 
-        // Access the EditText defined in layout XML
+        // 3. Access the EditText defined in layout XML
         mainEditText = (EditText) findViewById(R.id.main_edittext);
 
-        // Access the ListView
+        // 4. Access the ListView
         mainListView = (ListView) findViewById(R.id.main_listview);
 
-        // Set this activity to react to list items being pressed
+        // 5. Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
 
-        // Greet the user, or ask for their name if new
+        // 7. Greet the user, or ask for their name if new
         displayWelcome();
 
-        // Create a JSONAdapter for the ListView
+        // 10. Create a JSONAdapter for the ListView
         mJSONAdapter = new JSONAdapter(this, getLayoutInflater());
 
         // Set the ListView to use the ArrayAdapter
@@ -83,9 +86,11 @@ public class MainActivity extends Activity
     public void displayWelcome() {
 
         // Access the device's key-value storage
-        mSharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+        mSharedPreferences
+                = getSharedPreferences(PREFS, MODE_PRIVATE);
 
-        // Read the user's name, or an empty string if nothing found
+        // Read the user's name,
+        // or an empty string if nothing found
         String name = mSharedPreferences.getString(PREF_NAME, "");
 
         if (name.length() > 0) {
@@ -98,7 +103,8 @@ public class MainActivity extends Activity
         } else {
 
             // otherwise, show a dialog to ask for their name
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            AlertDialog.Builder alert
+                    = new AlertDialog.Builder(this);
             alert.setTitle("Hello!");
             alert.setMessage("What is your name?");
 
@@ -107,51 +113,86 @@ public class MainActivity extends Activity
             alert.setView(input);
 
             // Make an "OK" button to save the name
-            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
+            alert.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
 
-                    // Get the EditText's input
-                    String inputName = input.getText().toString();
+                        public void onClick(DialogInterface dialog,
+                                            int whichButton) {
 
-                    // Put it into memory (don't forget to commit!)
-                    SharedPreferences.Editor e = mSharedPreferences.edit();
-                    e.putString(PREF_NAME, inputName);
-                    e.commit();
+                            // Grab the EditText's input
+                            String inputName = input.getText().toString();
 
-                    // Display a Toast welcoming them
-                    Toast.makeText(getApplicationContext(),
-                            "Welcome, " + inputName + "!",
-                            Toast.LENGTH_LONG)
-                            .show();
-                }
-            });
+                            // Put it into memory (don't forget to commit!)
+                            SharedPreferences.Editor e =
+                                    mSharedPreferences.edit();
+                            e.putString(PREF_NAME, inputName);
+                            e.commit();
 
-            // Make a "Cancel" button that simply dismisses the alert
-            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
-            });
+                            // Welcome the new user
+                            Toast.makeText(getApplicationContext(),
+                                    "Welcome, " + inputName + "!",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+
+            // Make a "Cancel" button
+            // that simply dismisses the alert
+            alert.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog,
+                                            int whichButton) {}
+                    });
 
             alert.show();
         }
     }
 
+    @Override public void onClick(View v) {
+
+        // 9. Take what was typed into the EditText and use in search
+        queryBooks(mainEditText.getText().toString());
+    }
+
+    @Override public void onItemClick(AdapterView<?> parent,
+                                      View view, int position, long id) {
+
+        // 12. Now that the user's chosen a book, grab the cover data
+        String coverID =
+                mJSONAdapter.getItem(position).optString("cover_i","");
+
+        // create an Intent to take you over to a new DetailActivity
+        Intent detailIntent = new Intent(this, DetailActivity.class);
+
+        // pack away the data about the cover
+        // into your Intent before you head out
+        detailIntent.putExtra("coverID", coverID);
+
+        // TODO: add any other data you'd like as Extras
+
+        // start the next Activity using your prepared Intent
+        startActivity(detailIntent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu.
+        // Adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
         // Access the Share Item defined in menu XML
         MenuItem shareItem = menu.findItem(R.id.menu_item_share);
 
-        // Access the object responsible for putting together the sharing submenu
+        // Access the object responsible for
+        // putting together the sharing submenu
         if (shareItem != null) {
-            mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
+            mShareActionProvider = (ShareActionProvider)
+                    shareItem.getActionProvider();
         }
 
-        // Create an Intent to share our content
-        // It is in a separate method so we can call it from elsewhere too
+        // Create an Intent to share your content
         setShareIntent();
 
         return true;
@@ -162,46 +203,23 @@ public class MainActivity extends Activity
         // create an Intent with the contents of the TextView
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Development");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, mainTextView.getText());
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+                "Android Development");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                mainTextView.getText());
 
-        // Make sure the provider knows it should work with that Intent
+        // Make sure the provider knows
+        // it should work with that Intent
         mShareActionProvider.setShareIntent(shareIntent);
-    }
-
-    @Override public void onClick(View v) {
-
-        // Take what was typed into the EditText and use in search
-        queryBooks(mainEditText.getText().toString());
-    }
-
-    @Override public void onItemClick(AdapterView<?> parent,
-                                      View view,
-                                      int position,
-                                      long id) {
-
-        // Now that the user's chosen a book, let's grab the cover data
-        String coverID = mJSONAdapter.getItem(position).optString("cover_i","");
-
-        // create an Intent to take us over to a new DetailActivity
-        Intent detailIntent = new Intent(this, DetailActivity.class);
-
-        // pack away the data about the cover into our Intent before we head out
-        detailIntent.putExtra("coverID", coverID);
-
-        // TODO: add any other data we'd like as Extras
-
-        // start the next Activity using our prepared Intent
-        startActivity(detailIntent);
     }
 
     private void queryBooks(String searchString) {
 
-        // Prepare our search string to be put in a URL
+        // Prepare your search string to be put in a URL
         // It might have reserved characters or something
         String urlString = "";
         try {
-           urlString = URLEncoder.encode(searchString, "UTF-8");
+            urlString = URLEncoder.encode(searchString, "UTF-8");
         } catch (UnsupportedEncodingException e) {
 
             // if this fails for some reason, let the user know why
@@ -212,21 +230,25 @@ public class MainActivity extends Activity
                     .show();
         }
 
-        // Create a client to perform networking for us
+        // Create a client to perform networking
         AsyncHttpClient client = new AsyncHttpClient();
 
+        // 11. start progress bar
         setProgressBarIndeterminateVisibility(true);
 
-        // Have the client get a JSONArray of data, and define how to respond
+        // Have the client get a JSONArray of data
+        // and define how to respond
         client.get(QUERY_URL + urlString,
                 new JsonHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(JSONObject jsonObject) {
 
+                        // 11. stop progress bar
                         setProgressBarIndeterminateVisibility(false);
 
-                        // Display a "Toast" message to announce our success
+                        // Display a "Toast" message
+                        // to announce your success
                         Toast.makeText(getApplicationContext(),
                                 "Success!",
                                 Toast.LENGTH_LONG)
@@ -237,18 +259,29 @@ public class MainActivity extends Activity
                     }
 
                     @Override
-                    public void onFailure(Throwable throwable, JSONObject error) {
+                    public void onFailure(int statusCode,
+                                          Throwable throwable,
+                                          JSONObject error) {
 
+                        // 11. stop progress bar
                         setProgressBarIndeterminateVisibility(false);
 
-                        // Display a "Toast" message to announce the failure
+                        // Display a "Toast" message
+                        // to announce the failure
                         Toast.makeText(getApplicationContext(),
-                                "Error: " + throwable.getMessage() + " " + error.toString(),
+                                "Error: "
+                                        + statusCode
+                                        + " "
+                                        + throwable.getMessage(),
                                 Toast.LENGTH_LONG)
                                 .show();
 
-                        // Log error message to help solve any problems
-                        Log.e("omg android", throwable.getMessage() + " " + error.toString());
+                        // Log error message
+                        // to help solve any problems
+                        Log.e("omg android",
+                                statusCode
+                                        + " "
+                                        + throwable.getMessage());
                     }
                 });
     }
