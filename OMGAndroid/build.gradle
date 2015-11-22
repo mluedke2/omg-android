@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.android.tools.build:gradle:1.5.0'
     }
 }
 apply plugin: 'android'
@@ -13,17 +13,17 @@ repositories {
 }
 
 android {
-    compileSdkVersion 18
-    buildToolsVersion "18.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 16
+        targetSdkVersion 23
     }
 }
 
 dependencies {
-	compile 'com.android.support:appcompat-v7:18.0.0'
-    compile 'com.loopj.android:android-async-http:1.4.4'
-    compile 'com.squareup.picasso:picasso:2.1.1'
+	compile 'com.android.support:appcompat-v7:23.1.1'
+  compile 'com.loopj.android:android-async-http:1.4.4'
+  compile 'com.squareup.picasso:picasso:2.1.1'
 }
